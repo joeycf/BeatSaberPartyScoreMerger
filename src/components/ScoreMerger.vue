@@ -18,7 +18,6 @@
       <h2>Jro JSON</h2>
       <json-viewer
           :value="jroJson"
-          :expand-depth="3"
           :expanded="false"
           boxed
       ></json-viewer>
@@ -34,12 +33,9 @@
 </template>
 
 <script>
-/* eslint-disable */
-import _ from 'lodash'
+import _ from 'lodash';
 import JsonViewer from 'vue-json-viewer';
 import 'vue-json-viewer/style.css';
-// import VueJsonPretty from 'vue-json-pretty';
-import 'vue-json-pretty/lib/styles.css';
 import JOEY_JSON from '@/data/LocalLeaderboardsJOEY.json';
 import JRO_JSON from '@/data/LocalLeaderboardsJRO.json';
 import WANG_JSON from '@/data/LocalLeaderboardsWANG.json';
@@ -49,7 +45,6 @@ export default {
 
   components: {
     JsonViewer,
-    // VueJsonPretty,
   },
 
   data() {
@@ -70,7 +65,7 @@ export default {
         _leaderboardId: 'EarthNormal',
         _scores:
             [{
-             _score: 177352,
+              _score: 177352,
               _playerName: 'BAR',
               _fullCombo: true,
               _timestamp: 1599969253,
@@ -112,12 +107,13 @@ export default {
     mergedJson() {
       // TEST VARIABLES FOR MERGE
       // return this.jsonMerge(this.testJson1, this.testJson2);
-      let temp = this.jsonMerge(this.joeyJson, this.jroJson);
+      const temp = this.jsonMerge(this.joeyJson, this.jroJson);
       return this.jsonMerge(temp, this.wangJson);
     },
+
     copyableJson() {
-      return JSON.stringify({ "_leaderboardsData": this.mergedJson });
-    }
+      return JSON.stringify({ _leaderboardsData: this.mergedJson });
+    },
   },
 
   // watch: {
@@ -134,17 +130,16 @@ export default {
     },
 
     jsonMerge(json1, json2) {
-      let merged = json1;
+      const merged = json1;
 
       Object.values(json2).forEach((song) => {
         if (_.some(json1, ['_leaderboardId', song._leaderboardId])) {
           console.log('not new song so merged scores for: ', song);
           // target song in the merged list to add combined scores.
-          let foundMatch = _.find(merged, { _leaderboardId: song._leaderboardId });
+          const foundMatch = _.find(merged, { _leaderboardId: song._leaderboardId });
 
           // set new combined score list to song in the list
-          foundMatch['_scores'] = this.mergeScores(foundMatch._scores, song._scores);
-
+          foundMatch._scores = this.mergeScores(foundMatch._scores, song._scores);
         } else {
           // Assumes new song so add to list.
           console.log('new song so append: ', song);
@@ -163,7 +158,7 @@ export default {
      * @returns sorted array of the scores with no duplicates
      */
     mergeScores(scoresArr1, scoresArr2) {
-      let mergedScores = scoresArr1;
+      const mergedScores = scoresArr1;
       scoresArr2.forEach((score) => {
         if (_.some(scoresArr1, score)) {
           console.log('score already exists... skipping:', score);
@@ -178,21 +173,13 @@ export default {
   props: {
 
   },
-
-  // mounted() {
-  //   this.$nextTick(() => {
-  //     this.copyableJson = { "_leaderboardsData": this.mergedJson }
-  //     JSON.stringify(this.copyableJson);
-  //     console.log('copyable', this.copyableJson)
-  //   })
-  // }
 };
 </script>
 
 <style scoped>
 .copy-area {
   width: 75%;
-  height: 1000px;
+  height: 500px;
 }
 .viewer {
   margin-left: 10px;
