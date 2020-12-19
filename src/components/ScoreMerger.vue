@@ -134,7 +134,7 @@ export default {
 
       Object.values(json2).forEach((song) => {
         if (_.some(json1, ['_leaderboardId', song._leaderboardId])) {
-          console.log('not new song so merged scores for: ', song);
+          // console.log('not new song so merged scores for: ', song);
           // target song in the merged list to add combined scores.
           const foundMatch = _.find(merged, { _leaderboardId: song._leaderboardId });
 
@@ -142,7 +142,7 @@ export default {
           foundMatch._scores = this.mergeScores(foundMatch._scores, song._scores);
         } else {
           // Assumes new song so add to list.
-          console.log('new song so append: ', song);
+          // console.log('new song so append: ', song);
           merged.push(song);
         }
       });
